@@ -13,5 +13,10 @@ The Method is based on the self-supervised splice detector from [Huh et Al.](htt
 
 Like [Huh et Al.](https://github.com/minyoungg/selfconsistency) we only train on original photography from Flickr. To manage to adapt the domain to low-res video crops we also include scale augmentions in training and then rescale the patches to adequate size in test time. This is an important step which boosts the accuracy from about 60% to ~90% for the FaceForensics++ c0 data. At the moment, the accuracy of the method drops significantly when applying compression to the images.
 ## Demo
+Setup:
+
+- CUDA and cuDNN
+- python 2.7
+- requirements.txt
 
 Run `demo.py` for model download and visual demo. (Requires cuDNN capable GPU)
