@@ -1,6 +1,6 @@
 ## Self-Supervised learning for Deepfake detection
 
-This GitHub showcases the results of my Master's Thesis, that is detecting facial manipulations without a priori knowledge about the method.
+This GitHub showcases detecting facial manipulations without a priori knowledge about the manipulation method.
 
 <p align="center">
   <img src="https://i.imgur.com/chG950e.png">
