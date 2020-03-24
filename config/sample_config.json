@@ -1,0 +1,12 @@
+{
+  "model_load_path": "/path/to/saved/model/",
+  "train_path": "/path/to/train/data/",
+  "test_path": "/path/to/test/data/",
+  "train_loader": "hdf5-online",
+  "negative_loader": "hdf5",
+  "test_loader": "hdf5",
+  "num_train_samples": 99968,
+  "num_test_samples": 100000,
+  "warm_up_iterations": 0,
+  "augmentations": []
+}
