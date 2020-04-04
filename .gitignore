@@ -23,3 +23,5 @@ config/*
 *single.py
 *misc*
 .idea*
+venv/**
+demo/*.model
