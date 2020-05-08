@@ -3,7 +3,7 @@
 This repository showcases detecting facial manipulations without a priori knowledge about the manipulation method.
 
 <p align="center">
-  <img src="https://i.imgur.com/4J3yk7E.png">
+  <img src="https://i.imgur.com/Wu8ekwF.png">
 </p>
 
 The Model achives a classification accuracy (fake or real) of ~90% for the [Faceforensics++](https://github.com/ondyari/FaceForensics) Dataset across all 4 methods: Real Images, DeepFakes, FaceSwap, Face2Face.
