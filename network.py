@@ -58,5 +58,6 @@ class TripletLoss(nn.Module):
         dist_neg = torch.norm(triplet[0] - triplet[2], p=2, dim=1)
         loss = torch.clamp((self.margin + dist_pos  ** 2 - dist_neg  ** 2), min=0)
         loss = torch.sum(loss)
-        self.running_avg = self.running_avg * (1 - self.decay_factor) + self.decay_factor * torch.stack((torch.mean(dist_pos), torch.mean(dist_neg)))
+        with torch.no_grad():
+            self.running_avg = self.running_avg * (1 - self.decay_factor) + self.decay_factor * torch.stack((torch.mean(dist_pos), torch.mean(dist_neg)))
         return loss
