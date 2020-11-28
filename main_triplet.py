@@ -133,11 +133,8 @@ def train(model, num_epochs, is_pretraining=False):
         for im, labels in train_loader:
             model.eval()
             im = im.cuda()
-            # Clear all accumulated gradients
             optimizer.zero_grad()
-            # Predict classes using images from the test set
             outputs = model(im)
-            # Create pairs of right and wrong samples for training metrics
             with torch.no_grad():
                 b_size = im.shape[0]
                 right = outputs.view(-1, 2, embedding_size)
@@ -157,7 +154,6 @@ def train(model, num_epochs, is_pretraining=False):
                 num_semi_hard = triplets.shape[0]
             del outputs
             loss = loss_fn(triplet_outputs)
-            # Backpropagate the loss and adjust parameters
             loss.backward()
             optimizer.step()
             train_loss += loss
@@ -207,7 +203,6 @@ if __name__ == "__main__":
     test_loader = DataLoader(test_dataset, batch_size=batch_size * num_per_im * 32)
     test_loader_iterator = iter(test_loader)
     writer, test_writer = reset_tensorboard()
-    # Create model, optimizer and loss function
     mod = OnlineFeatureNetwork()
     mod.cuda()
     optimizer = Adam(mod.parameters(), lr=lr)
@@ -216,7 +211,6 @@ if __name__ == "__main__":
     if load and config['model_load_path']:
         mod.load_state_dict(torch.load(config['model_load_path']))
         train(mod, num_epochs=epochs)
-    # Freezes part of the model for pretraining and then another part of the model for main training (transfer learning)
     elif num_pretrain_steps:
         train_with_pretraining(mod, num_epochs=epochs)
     else:
