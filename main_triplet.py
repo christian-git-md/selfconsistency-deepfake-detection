@@ -22,23 +22,19 @@ args = parser.parse_args()
 print("training started with settings: {}".format(args))
 
 batch_size = args.bs  # Batch size
-lr = args.lr  # learning rate
-epochs = args.epochs  # number of epochs
-num_per_im = 8  # number of patches cropped from each image
-model_save_iter = 1500  # inverval of model saving
-margin = 0.2  # value for the margin variable that appears in the triplet loss
-embedding_size = 128
-load = True  # load a saved model
+lr = args.lr  # Learning rate
+epochs = args.epochs  # Number of epochs
+num_per_im = 8  # Number of patches cropped from each image
+model_save_iter = 1500  # Inverval of model saving
+margin = 0.2  # Value for the margin variable that appears in the triplet loss
+embedding_size = 128 # Size of the latent space
+load = True  # Load a saved model
 validation = False  # use validation data while training
-num_test_iter = 1
-parallel = False
+num_test_iter = 1 # Number of validation iterations
+parallel = False # Use multiple GPUs for training
 
 
 def train_with_pretraining(model, num_epochs):
-    """
-    Use a pretrained model and do some steps for warmup,
-    where the non-head part of the model stays frozen
-    """
     model = freeze_all(model=model)
     for param in model.resnet._modules['fc'].parameters():
         param.requires_grad = True
@@ -59,7 +55,7 @@ def train_head(model, num_epochs=epochs):
 
 def unfreeze(model):
     model = freeze_all(model=model)
-    # all parameters are listed here for completeness
+    # All parameters are listed here for completeness
     for param in model.resnet._modules['conv1'].parameters():
         param.requires_grad = True
     for param in model.resnet._modules['layer1'].parameters():
@@ -125,7 +121,7 @@ def getmetrics(count_0, count_1, tp, tn):
 
 def train(model, num_epochs, is_pretraining=False):
     train_loss = 0.0
-    count_0 = 0.000001  # to avoid dividing by something bad
+    count_0 = 0.000001  # To avoid dividing by something bad
     count_1 = 0.000001
     tp = 0.0
     tn = 0.0
@@ -155,7 +151,6 @@ def train(model, num_epochs, is_pretraining=False):
                 tp += torch.sum((prediction == labels) * (labels == 1), dim=0)
                 tn += torch.sum((prediction == labels) * (labels == 0), dim=0)
             triplets = triplet_selector.select_triples(outputs)
-
             triplet_outputs = outputs.view(-1, embedding_size)[triplets.view(-1)].view(
                 triplets.shape[0], triplets.shape[1], embedding_size).transpose_(0, 1)
             with torch.no_grad():
@@ -202,7 +197,6 @@ if __name__ == "__main__":
         config = json.load(fp)
     num_train_samples = get_dict_value_or_none(config, 'num_train_samples')
     num_test_samples = get_dict_value_or_none(config, 'num_test_samples')
-
     num_pretrain_steps = config['warm_up_iterations']
     taglist = ['image']
     train_dataset = get_dataset_from_type(config['train_loader'], config["train_path"], num_train_samples,
@@ -222,7 +216,7 @@ if __name__ == "__main__":
     if load and config['model_load_path']:
         mod.load_state_dict(torch.load(config['model_load_path']))
         train(mod, num_epochs=epochs)
-    # freezes part of the model for pretraining and then another part of the model for main training (transfer learning)
+    # Freezes part of the model for pretraining and then another part of the model for main training (transfer learning)
     elif num_pretrain_steps:
         train_with_pretraining(mod, num_epochs=epochs)
     else:
