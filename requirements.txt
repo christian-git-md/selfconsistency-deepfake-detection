@@ -2,7 +2,7 @@ setuptools<45.0.0
 opencv-python==4.2.0.32
 matplotlib==2.2.5
 Pillow==6.2.0
-torch==1.0.1.post2
+torch==1.13.1
 torchvision==0.2.1
 h5py==2.8
 scipy==1.2.3
